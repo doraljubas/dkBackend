@@ -27,7 +27,7 @@ public class ReportRepository {
 
     public int insertReport(Report report){
         String SQL=""" 
-        INSERT INTO Report(date_report, diagnosis, recomendation, anamnesis, ID_patient, ID_doctor) 
+        INSERT INTO Report(date_report, diagnosis, recomendation, anamnesis, ID_patient, ID_doctor)
         VALUES(:date_report, :diagnosis, :recomendation, :anamnesis, :ID_patient, :ID_doctor)
         """;
         SqlParameterSource namedParameters = new MapSqlParameterSource(":date_report", report.getDateReport())
