@@ -3,9 +3,7 @@ package infsus.dz3.dkbackend.controller;
 import infsus.dz3.dkbackend.model.Patient;
 import infsus.dz3.dkbackend.service.DoctorService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +15,8 @@ import java.util.List;
 public class DoctorController {
     DoctorService doctorService;
 
-    @PostMapping(value="/getPatients")
-    public List<Patient> getPatients(@RequestBody int doctorId){
+    @GetMapping(value="/getPatients")
+    public List<Patient> getPatients(@RequestParam("doctorId") int doctorId){
         return doctorService.getPatients(doctorId);
     }
 }
