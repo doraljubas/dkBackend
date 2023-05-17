@@ -40,4 +40,10 @@ public class ReportRepository {
         namedParameterJdbcTemplate.update(SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
+    public void deleteReport(int reportId){
+        String SQL="DELETE FROM Report WHERE id_report = :reportId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource(":reportId", reportId);
+        namedParameterJdbcTemplate.update(SQL, namedParameters);
+    }
 }

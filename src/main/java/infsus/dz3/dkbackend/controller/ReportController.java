@@ -22,4 +22,10 @@ public class ReportController {
     public void postReport(@RequestBody ReportDto reportDto){
         reportService.insertReport(reportDto);
     }
+
+    @GetMapping(value="/deleteReport")
+    public void postReport(@RequestParam("reportId") int reportId){
+        reportService.deleteReport(reportId);
+    }
+
 }

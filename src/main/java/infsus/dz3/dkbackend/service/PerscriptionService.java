@@ -10,11 +10,11 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class PerscriptionService {
-    PrescriptionRepository perscriptionRepository;
+    PrescriptionRepository prescriptionRepository;
 
     //Dohvat svih recepata nalaza za zadani reportId
     public List<Prescription> getPrescriptions(int reportId){
-        return perscriptionRepository.getPrescriptions(reportId);
+        return prescriptionRepository.getPrescriptions(reportId);
     }
 
 }

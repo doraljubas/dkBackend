@@ -23,9 +23,17 @@ public class ReportService {
 
     public void insertReport(ReportDto report){
         int id_report = reportRepository.insertReport(report.getReport());
+        report.getReport().setIdReport(id_report);
         for(Prescription prescription : report.getPrescriptions()){
             prescriptionRepository.insertPrescription(prescription);
         }
+    }
 
+    public void deleteReport(int reportId){
+        reportRepository.deleteReport(reportId);
+        List<Prescription> prescriptions = prescriptionRepository.getPrescriptions(reportId);
+        for(Prescription prescription : prescriptions){
+            prescriptionRepository.deletePrescription(prescription.getIdPrescription());
+        }
     }
 }
