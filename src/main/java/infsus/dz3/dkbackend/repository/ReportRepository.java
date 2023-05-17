@@ -20,7 +20,7 @@ public class ReportRepository {
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public List<Report> getReports(int patientId){
-        String SQL="SELECT * FROM patient NATURAL JOIN report WHERE id_patient = :patientId";
+        String SQL="SELECT * FROM patient NATURAL JOIN report WHERE id_patient = :patientId and id_doctor = 5";
         SqlParameterSource namedParameters = new MapSqlParameterSource("patientId", patientId);
         return namedParameterJdbcTemplate.query(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Report.class));
     }
