@@ -17,10 +17,7 @@ public class Report {
   private String diagnosis;
   private String recomendation;
   private String anamnesis;
-  private Doctor doctor;
-  private Patient patient;
-
-
-
+  private long idDoctor;
+  private long idPatient;
 
 }

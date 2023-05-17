@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Doctor extends Healthcareuser {
   private long idDoctor;
-  private Facility facility;
-  private Specialization specialization;
+  private long idFacility;
+  private long idSpecialization;
 
 }

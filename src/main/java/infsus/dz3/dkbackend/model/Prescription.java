@@ -16,8 +16,8 @@ public class Prescription {
   private java.sql.Date dateOfExpiry;
   private String instructions;
   private boolean renewing;
-  private Medication medication;
-  private Report report;
+  private long idMedication;
+  private long idReport;
 
 
 
