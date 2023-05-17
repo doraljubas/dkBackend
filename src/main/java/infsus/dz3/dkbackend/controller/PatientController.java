@@ -19,4 +19,9 @@ public class PatientController {
     public List<Patient> getPatients(@RequestParam("doctorId") int doctorId){
         return patientService.getPatients(doctorId);
     }
+
+    @GetMapping(value="/getPatient")
+    public Patient getPatient(@RequestParam("patientId") int patientId){
+        return patientService.getPatient(patientId);
+    }
 }

@@ -16,4 +16,8 @@ public class PatientService {
     public List<Patient> getPatients(int doctorId){
         return patientRepository.getPatients(doctorId);
     }
+
+    public Patient getPatient(int patientId){
+        return patientRepository.getPatient(patientId);
+    }
 }
