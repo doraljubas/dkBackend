@@ -1,6 +1,7 @@
 package infsus.dz3.dkbackend.repository;
 
-import infsus.dz3.dkbackend.model.Doctor;
+
+import infsus.dz3.dkbackend.model.Specialization;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -10,12 +11,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
-public class DoctorRepository {
+public class SpecializationRepository {
+
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public Doctor getDoctor(long doctorId){
-        String SQL="SELECT * FROM doctor NATURAL JOIN healthcareuser WHERE id_doctor = :doctorId";
-        SqlParameterSource namedParameters = new MapSqlParameterSource("doctorId", doctorId);
-        return namedParameterJdbcTemplate.queryForObject(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Doctor.class));
+    public Specialization getSpecialization(long specializationId){
+        String SQL="SELECT * FROM specialization WHERE id_specialization = :specializationId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("specializationId", specializationId);
+        return namedParameterJdbcTemplate.queryForObject(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Specialization.class));
     }
 }

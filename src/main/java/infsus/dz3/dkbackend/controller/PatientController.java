@@ -1,5 +1,6 @@
 package infsus.dz3.dkbackend.controller;
 
+import infsus.dz3.dkbackend.dto.PatientDto;
 import infsus.dz3.dkbackend.model.Patient;
 import infsus.dz3.dkbackend.service.PatientService;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,12 @@ public class PatientController {
     PatientService patientService;
 
     @GetMapping(value="/getPatients")
-    public List<Patient> getPatients(@RequestParam("doctorId") int doctorId){
+    public List<PatientDto> getPatients(@RequestParam("doctorId") long doctorId){
         return patientService.getPatients(doctorId);
     }
 
     @GetMapping(value="/getPatient")
-    public Patient getPatient(@RequestParam("patientId") int patientId){
+    public PatientDto getPatient(@RequestParam("patientId") long patientId){
         return patientService.getPatient(patientId);
     }
 }

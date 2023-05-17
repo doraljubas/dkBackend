@@ -19,7 +19,7 @@ public class ReportRepository {
 
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Report> getReports(int patientId){
+    public List<Report> getReports(long patientId){
         String SQL="SELECT * FROM patient NATURAL JOIN report WHERE id_patient = :patientId and id_doctor = 5";
         SqlParameterSource namedParameters = new MapSqlParameterSource("patientId", patientId);
         return namedParameterJdbcTemplate.query(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Report.class));
@@ -34,14 +34,14 @@ public class ReportRepository {
                 .addValue(":diagnosis", report.getDiagnosis())
                 .addValue(":recomendation", report.getRecomendation())
                 .addValue(":anamnesis", report.getAnamnesis())
-                .addValue(":ID_patient", report.getPatient().getIdPatient())
-                .addValue(":ID_doctor", report.getDoctor().getIdDoctor());
+                .addValue(":ID_patient", report.getIdPatient())
+                .addValue(":ID_doctor", report.getIdDoctor());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
     }
 
-    public void deleteReport(int reportId){
+    public void deleteReport(long reportId){
         String SQL="DELETE FROM Report WHERE id_report = :reportId";
         SqlParameterSource namedParameters = new MapSqlParameterSource(":reportId", reportId);
         namedParameterJdbcTemplate.update(SQL, namedParameters);

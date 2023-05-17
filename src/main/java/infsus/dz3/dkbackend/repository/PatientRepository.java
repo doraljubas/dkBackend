@@ -15,13 +15,13 @@ public class PatientRepository {
 
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Patient> getPatients(int doctorId){
+    public List<Patient> getPatients(long doctorId){
         String SQL="SELECT * FROM patient NATURAL JOIN healthcareuser WHERE id_doctor = :doctorId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("doctorId", doctorId);
         return namedParameterJdbcTemplate.query(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Patient.class));
     }
 
-    public Patient getPatient(int patientId){
+    public Patient getPatient(long patientId){
         String SQL="SELECT * FROM patient NATURAL JOIN healthcareuser WHERE id_patient = :patientId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("patientId", patientId);
         return namedParameterJdbcTemplate.queryForObject(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Patient.class));

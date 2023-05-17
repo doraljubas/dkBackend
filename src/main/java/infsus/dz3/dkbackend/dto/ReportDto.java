@@ -1,19 +1,22 @@
 package infsus.dz3.dkbackend.dto;
 
-import infsus.dz3.dkbackend.model.Prescription;
-import infsus.dz3.dkbackend.model.Report;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDto {
-    Report report;
-    List<Prescription> prescriptions;
+
+    private long idReport;
+    private java.sql.Timestamp dateReport;
+    private String diagnosis;
+    private String recomendation;
+    private String anamnesis;
+    private DoctorDto doctor;
+    private PatientDto patient;
+
 }

@@ -19,8 +19,4 @@ public class Healthcareuser {
   private String sex;
   private String username;
 
-
-
-
-
 }

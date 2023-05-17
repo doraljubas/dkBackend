@@ -15,7 +15,7 @@ public class PrescriptionRepository {
 
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Prescription> getPrescriptions(int reportId){
+    public List<Prescription> getPrescriptions(long reportId){
         String SQL="SELECT * FROM report NATURAL JOIN prescription NATURAL JOIN medication WHERE id_report = :reportId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("reportId", reportId);
         return namedParameterJdbcTemplate.query(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Prescription.class));
@@ -29,8 +29,8 @@ public class PrescriptionRepository {
         SqlParameterSource namedParameters = new MapSqlParameterSource(":date_of_expiry", prescription.getDateOfExpiry())
                 .addValue(":instructions", prescription.getInstructions())
                 .addValue(":renewing", prescription.isRenewing())
-                .addValue(":ID_medication", prescription.getMedication().getIdMedication())
-                .addValue(":ID_report", prescription.getReport().getIdReport());
+                .addValue(":ID_medication", prescription.getIdMedication())
+                .addValue(":ID_report", prescription.getIdReport());
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 
