@@ -4,6 +4,8 @@ import infsus.dz3.dkbackend.dto.DoctorDto;
 import infsus.dz3.dkbackend.dto.PatientDto;
 import infsus.dz3.dkbackend.model.Patient;
 import infsus.dz3.dkbackend.repository.PatientRepository;
+import infsus.dz3.dkbackend.utils.filters.domain.Filter;
+import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,10 +20,11 @@ public class PatientService {
     private DoctorService doctorService;
     PatientRepository patientRepository;
 
-    public List<PatientDto> getPatients(long doctorId){
+    public List<PatientDto> getPatients(long doctorId, List<Filter> filters){
         DoctorDto doctor = doctorService.getDoctor(doctorId);
         List<PatientDto> patients =  new ArrayList<>();
-        for(Patient patient : patientRepository.getPatients(doctorId)){
+        filters.add(new Filter(FilterType.EXACT, "idDoctor", doctorId,null,null,null));
+        for(Patient patient : patientRepository.getPatients(filters)){
             PatientDto patientdto = modelMapper.map(patient, PatientDto.class);
             patientdto.setFamilyDoctor(doctor);
             patients.add(patientdto);
