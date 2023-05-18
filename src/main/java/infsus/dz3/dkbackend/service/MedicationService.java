@@ -2,6 +2,7 @@ package infsus.dz3.dkbackend.service;
 
 import infsus.dz3.dkbackend.dto.MedicationDto;
 import infsus.dz3.dkbackend.model.Medication;
+import infsus.dz3.dkbackend.repository.HealhcareCompanyRepository;
 import infsus.dz3.dkbackend.repository.MedicationRepository;
 import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class MedicationService {
 
     MedicationRepository medicationRepository;
+    HealhcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
 
     public void insertMedication(Medication medication){
@@ -32,7 +34,9 @@ public class MedicationService {
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         List<Medication> medications = medicationRepository.getMedications(filters);
         List<MedicationDto> medicationsDto = medications.stream().map(med->modelMapper.map(med, MedicationDto.class)).collect(Collectors.toList());
-        //TODO get company
+        for(MedicationDto medication : medicationsDto){
+            medication.setCompany(healthcareCompanyRepository.getHealhcareCompany(medication.getCompany().getIdCompany()));
+        }
         return medicationsDto;
     }
 }
