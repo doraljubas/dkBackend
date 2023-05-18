@@ -29,7 +29,7 @@ public class MedicationService {
     }
 
     public List<MedicationDto> getMedications(List<Filter> filters) {
-        filters.add(new Filter<>(FilterType.BOOLEAN, "inUseFlag",true, null, null, null));
+        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         List<Medication> medications = medicationRepository.getMedications(filters);
         List<MedicationDto> medicationsDto = medications.stream().map(med->modelMapper.map(med, MedicationDto.class)).collect(Collectors.toList());
         //TODO get company
