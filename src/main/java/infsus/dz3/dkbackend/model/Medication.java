@@ -11,8 +11,8 @@ import lombok.Setter;
 public class Medication {
 
   private long idMedication;
-  private String medicationName;
-  private String medicationType;
+  private String nameMedication;
+  private String typeMedication;
   private long idCompany;
   private boolean inUseFlag;
 

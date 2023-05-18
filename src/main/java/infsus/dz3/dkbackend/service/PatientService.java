@@ -32,7 +32,7 @@ public class PatientService {
     public PatientDto getPatient(long patientId){
         Patient patient = patientRepository.getPatient(patientId);
         PatientDto patientdto = modelMapper.map(patient, PatientDto.class);
-        DoctorDto doctor = doctorService.getDoctor(patient.getIdFamilyDoctor());
+        DoctorDto doctor = doctorService.getDoctor(5);
         patientdto.setFamilyDoctor(doctor);
         return patientdto;
     }

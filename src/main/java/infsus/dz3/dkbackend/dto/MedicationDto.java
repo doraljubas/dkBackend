@@ -12,8 +12,8 @@ import lombok.Setter;
 public class MedicationDto {
 
   private long idMedication;
-  private String medicationName;
-  private String medicationType;
+  private String nameMedication;
+  private String typeMedication;
   private HealthcareCompany company;
   private boolean inUseFlag;
 

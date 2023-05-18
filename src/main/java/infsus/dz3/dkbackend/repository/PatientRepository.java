@@ -22,8 +22,11 @@ public class PatientRepository {
     }
 
     public Patient getPatient(long patientId){
-        String SQL="SELECT * FROM patient NATURAL JOIN healthcareuser WHERE id_patient = :patientId";
+        String SQL="SELECT * FROM patient NATURAL JOIN healthcareuser JOIN doctor ON doctor.id_doctor=patient.id_doctor WHERE id_patient = :patientId";
         SqlParameterSource namedParameters = new MapSqlParameterSource("patientId", patientId);
         return namedParameterJdbcTemplate.queryForObject(SQL,namedParameters, BeanPropertyRowMapper.newInstance(Patient.class));
     }
+
+
+
 }
