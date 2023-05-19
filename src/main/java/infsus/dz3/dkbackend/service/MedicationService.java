@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,15 +22,39 @@ public class MedicationService {
     HealhcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
 
-    public void updateMedication(MedicationDto medicationDto){
+    public boolean updateMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
         medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+        List<Filter> filters = new ArrayList<>();
+        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
+        for(Medication med : medicationRepository.getMedications(filters)) {
+            if((med.getNameMedication().equals(medication.getNameMedication())
+                    && !med.getTypeMedication().equals(medication.getTypeMedication()))
+                    || (med.getNameMedication().equals(medication.getNameMedication())
+                    && med.getTypeMedication().equals(medication.getTypeMedication())
+                    && med.getIdCompany()==medication.getIdCompany())){
+                return false;
+            }
+        }
         medicationRepository.insertMedication(medication);
+        return true;
     }
-    public void insertMedication(MedicationDto medicationDto){
+    public boolean insertMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
         medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+        List<Filter> filters = new ArrayList<>();
+        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
+        for(Medication med : medicationRepository.getMedications(filters)) {
+            if((med.getNameMedication().equals(medication.getNameMedication())
+                && !med.getTypeMedication().equals(medication.getTypeMedication()))
+                || (med.getNameMedication().equals(medication.getNameMedication())
+                    && med.getTypeMedication().equals(medication.getTypeMedication())
+                    && med.getIdCompany()==medication.getIdCompany())){
+                return false;
+            }
+        }
         medicationRepository.insertMedication(medication);
+        return true;
     }
 
     public void deleteMedication(long medicationId){

@@ -26,17 +26,17 @@ public class PrescriptionRepository {
                 INSERT INTO Prescription(date_of_expiry, instructions, renewing, ID_medication, ID_report)
                 VALUES(:date_of_expiry, :instructions, :renewing, :ID_medication, :ID_report)
                 """;
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":date_of_expiry", prescription.getDateOfExpiry())
-                .addValue(":instructions", prescription.getInstructions())
-                .addValue(":renewing", prescription.isRenewing())
-                .addValue(":ID_medication", prescription.getIdMedication())
-                .addValue(":ID_report", prescription.getIdReport());
+        SqlParameterSource namedParameters = new MapSqlParameterSource("date_of_expiry", prescription.getDateOfExpiry())
+                .addValue("instructions", prescription.getInstructions())
+                .addValue("renewing", prescription.isRenewing())
+                .addValue("ID_medication", prescription.getIdMedication())
+                .addValue("ID_report", prescription.getIdReport());
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 
     public void deletePrescription(long prescriptionId){
         String SQL="DELETE FROM Prescription WHERE id_prescription = :prescriptionId";
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":prescriptionId", prescriptionId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("prescriptionId", prescriptionId);
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 

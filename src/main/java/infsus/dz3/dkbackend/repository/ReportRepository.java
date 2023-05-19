@@ -30,12 +30,12 @@ public class ReportRepository {
         INSERT INTO Report(date_report, diagnosis, recomendation, anamnesis, ID_patient, ID_doctor)
         VALUES(:date_report, :diagnosis, :recomendation, :anamnesis, :ID_patient, :ID_doctor)
         """;
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":date_report", report.getDateReport())
-                .addValue(":diagnosis", report.getDiagnosis())
-                .addValue(":recomendation", report.getRecomendation())
-                .addValue(":anamnesis", report.getAnamnesis())
-                .addValue(":ID_patient", report.getIdPatient())
-                .addValue(":ID_doctor", report.getIdDoctor());
+        SqlParameterSource namedParameters = new MapSqlParameterSource("date_report", report.getDateReport())
+                .addValue("diagnosis", report.getDiagnosis())
+                .addValue("recomendation", report.getRecomendation())
+                .addValue("anamnesis", report.getAnamnesis())
+                .addValue("ID_patient", report.getIdPatient())
+                .addValue("ID_doctor", report.getIdDoctor());
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(SQL, namedParameters, keyHolder);
         return keyHolder.getKey().intValue();
@@ -43,7 +43,7 @@ public class ReportRepository {
 
     public void deleteReport(long reportId){
         String SQL="DELETE FROM Report WHERE id_report = :reportId";
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":reportId", reportId);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("reportId", reportId);
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 }

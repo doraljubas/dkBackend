@@ -15,8 +15,8 @@ public class MedicationController {
     MedicationService medicationService;
 
     @PostMapping(value="/insertMedication")
-    public void insertMedication(@RequestBody MedicationDto medication){
-        medicationService.insertMedication(medication);
+    public boolean insertMedication(@RequestBody MedicationDto medication){
+        return medicationService.insertMedication(medication);
     }
 
     @GetMapping(value="/deleteMedication")
@@ -24,8 +24,8 @@ public class MedicationController {
         medicationService.deleteMedication(medicationId);
     }
     @PostMapping(value="/editMedication")
-    public void updateMedication(@RequestBody MedicationDto medication){
-        medicationService.updateMedication(medication);
+    public boolean updateMedication(@RequestBody MedicationDto medication){
+        return medicationService.updateMedication(medication);
     }
     @PostMapping(value="/getMedications")
     public List<MedicationDto> getMedications(@RequestBody List<Filter> filters){
