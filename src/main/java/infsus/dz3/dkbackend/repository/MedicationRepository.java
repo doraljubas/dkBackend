@@ -1,7 +1,6 @@
 package infsus.dz3.dkbackend.repository;
 
 import infsus.dz3.dkbackend.model.Medication;
-import infsus.dz3.dkbackend.model.Report;
 import infsus.dz3.dkbackend.utils.filters.FilterHelper;
 import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import lombok.AllArgsConstructor;
@@ -10,8 +9,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,9 +37,22 @@ public class MedicationRepository {
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 
-    public void deleteMedication(int medicationId){
-        String SQL="DELETE FROM Medication WHERE id_medication = :medicationId";
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":medicationId", medicationId);
+    public void deleteMedication(long medicationId){
+        String SQL="UPDATE Medication SET inUseFlag = False WHERE id_medication = :medicationId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("medicationId", medicationId);
+        namedParameterJdbcTemplate.update(SQL, namedParameters);
+    }
+
+    public void updateMedication(Medication medication){
+        String SQL="""
+                    UPDATE Medication
+                    SET name_medication = :nameMed, type_medication = :typeMed, id_company = idComp
+                    WHERE id_medication = :medicationId
+                    """;
+        SqlParameterSource namedParameters = new MapSqlParameterSource(":medicationId", medication.getIdMedication())
+                .addValue(":name_medication", medication.getNameMedication())
+                .addValue(":type_medication", medication.getTypeMedication())
+                .addValue(":ID_company", medication);
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 

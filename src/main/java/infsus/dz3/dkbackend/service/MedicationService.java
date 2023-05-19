@@ -9,7 +9,6 @@ import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,11 +21,18 @@ public class MedicationService {
     HealhcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
 
-    public void insertMedication(Medication medication){
+    public void updateMedication(MedicationDto medicationDto){
+        Medication medication = modelMapper.map(medicationDto, Medication.class);
+        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+        medicationRepository.insertMedication(medication);
+    }
+    public void insertMedication(MedicationDto medicationDto){
+        Medication medication = modelMapper.map(medicationDto, Medication.class);
+        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
         medicationRepository.insertMedication(medication);
     }
 
-    public void deleteMedication(int medicationId){
+    public void deleteMedication(long medicationId){
         medicationRepository.deleteMedication(medicationId);
     }
 
