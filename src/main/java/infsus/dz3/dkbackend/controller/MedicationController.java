@@ -15,7 +15,7 @@ public class MedicationController {
     MedicationService medicationService;
 
     @PostMapping(value="/insertMedication")
-    public boolean insertMedication(@RequestBody MedicationDto medication){
+    public int insertMedication(@RequestBody MedicationDto medication){
         return medicationService.insertMedication(medication);
     }
 
@@ -24,7 +24,7 @@ public class MedicationController {
         medicationService.deleteMedication(medicationId);
     }
     @PostMapping(value="/editMedication")
-    public boolean updateMedication(@RequestBody MedicationDto medication){
+    public int updateMedication(@RequestBody MedicationDto medication){
         return medicationService.updateMedication(medication);
     }
     @PostMapping(value="/getMedications")

@@ -22,38 +22,46 @@ public class MedicationService {
     HealthcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
 
-    public boolean updateMedication(MedicationDto medicationDto){
+    public int updateMedication(MedicationDto medicationDto){
+        Medication medication = modelMapper.map(medicationDto, Medication.class);
+        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+        List<Filter> filters = new ArrayList<>();
+        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
+        for(Medication med : medicationRepository.getMedications(filters)) {
+            if(med.getIdMedication() != medication.getIdMedication()){
+                if(med.getNameMedication().equals(medication.getNameMedication())
+                        && !med.getTypeMedication().equals(medication.getTypeMedication())){
+                    return 1;
+                }
+                if(med.getNameMedication().equals(medication.getNameMedication())
+                        && med.getTypeMedication().equals(medication.getTypeMedication())
+                        && med.getIdCompany()==medication.getIdCompany()){
+                    return 2;
+                }
+            }
+        }
+        medicationRepository.updateMedication(medication);
+        return 0;
+
+    }
+    public int insertMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
         medication.setIdCompany(medicationDto.getCompany().getIdCompany());
         List<Filter> filters = new ArrayList<>();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
             if(med.getNameMedication().equals(medication.getNameMedication())
+                && !med.getTypeMedication().equals(medication.getTypeMedication())){
+                return 1;
+            }
+            if(med.getNameMedication().equals(medication.getNameMedication())
                     && med.getTypeMedication().equals(medication.getTypeMedication())
                     && med.getIdCompany()==medication.getIdCompany()){
-                return false;
-            }
-        }
-        medicationRepository.updateMedication(medication);
-        return true;
-
-    }
-    public boolean insertMedication(MedicationDto medicationDto){
-        Medication medication = modelMapper.map(medicationDto, Medication.class);
-        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
-        List<Filter> filters = new ArrayList<>();
-        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
-        for(Medication med : medicationRepository.getMedications(filters)) {
-            if((med.getNameMedication().equals(medication.getNameMedication())
-                && !med.getTypeMedication().equals(medication.getTypeMedication()))
-                || (med.getNameMedication().equals(medication.getNameMedication())
-                    && med.getTypeMedication().equals(medication.getTypeMedication())
-                    && med.getIdCompany()==medication.getIdCompany())){
-                return false;
+                return 2;
             }
         }
         medicationRepository.insertMedication(medication);
-        return true;
+        return 0;
     }
 
     public void deleteMedication(long medicationId){
