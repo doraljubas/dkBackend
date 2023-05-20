@@ -31,9 +31,9 @@ public class MedicationRepository {
         INSERT INTO Medication(name_medication, type_medication, ID_company, inUseFlag)
         VALUES(:name_medication, :type_medication, :ID_company, TRUE)
         """;
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":name_medication", medication.getNameMedication())
-                .addValue(":type_medication", medication.getTypeMedication())
-                .addValue(":ID_company", medication);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("name_medication", medication.getNameMedication())
+                .addValue("type_medication", medication.getTypeMedication())
+                .addValue("ID_company", medication.getIdCompany());
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 
@@ -46,13 +46,13 @@ public class MedicationRepository {
     public void updateMedication(Medication medication){
         String SQL="""
                     UPDATE Medication
-                    SET name_medication = :nameMed, type_medication = :typeMed, id_company = idComp
+                    SET name_medication = :name_medication, type_medication = :type_medication, id_company = :ID_company
                     WHERE id_medication = :medicationId
                     """;
-        SqlParameterSource namedParameters = new MapSqlParameterSource(":medicationId", medication.getIdMedication())
-                .addValue(":name_medication", medication.getNameMedication())
-                .addValue(":type_medication", medication.getTypeMedication())
-                .addValue(":ID_company", medication);
+        SqlParameterSource namedParameters = new MapSqlParameterSource("medicationId", medication.getIdMedication())
+                .addValue("name_medication", medication.getNameMedication())
+                .addValue("type_medication", medication.getTypeMedication())
+                .addValue("ID_company", medication.getIdCompany());
         namedParameterJdbcTemplate.update(SQL, namedParameters);
     }
 

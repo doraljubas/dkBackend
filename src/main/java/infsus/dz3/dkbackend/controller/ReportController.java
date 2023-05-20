@@ -19,7 +19,7 @@ public class ReportController {
         return reportService.getReports(patientId);
     }
 
-    @PostMapping(value="/postReport")
+    @PostMapping(value="/addReport")
     public void postReport(@RequestBody RepPrescDto repPresc){
         reportService.insertReport(repPresc);
     }

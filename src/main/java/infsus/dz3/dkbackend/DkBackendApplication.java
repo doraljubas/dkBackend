@@ -1,5 +1,7 @@
 package infsus.dz3.dkbackend;
 
+import infsus.dz3.dkbackend.dto.ReportDto;
+import infsus.dz3.dkbackend.model.Report;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,7 +18,10 @@ public class DkBackendApplication {
 	public class AppConfiguration {
 		@Bean
 		public ModelMapper modelMapper() {
-			return new ModelMapper();
+			ModelMapper modelMapper = new ModelMapper();
+//			modelMapper.createTypeMap(ReportDto.class,Report.class)
+//					.addMappings(reportDto->reportDto.getDoctor().);
+			return modelMapper;
 		}
 	}
 }

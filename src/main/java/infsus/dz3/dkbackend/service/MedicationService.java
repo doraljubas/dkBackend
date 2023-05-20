@@ -2,7 +2,7 @@ package infsus.dz3.dkbackend.service;
 
 import infsus.dz3.dkbackend.dto.MedicationDto;
 import infsus.dz3.dkbackend.model.Medication;
-import infsus.dz3.dkbackend.repository.HealhcareCompanyRepository;
+import infsus.dz3.dkbackend.repository.HealthcareCompanyRepository;
 import infsus.dz3.dkbackend.repository.MedicationRepository;
 import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class MedicationService {
 
     MedicationRepository medicationRepository;
-    HealhcareCompanyRepository healthcareCompanyRepository;
+    HealthcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
 
     public boolean updateMedication(MedicationDto medicationDto){
@@ -28,16 +28,15 @@ public class MedicationService {
         List<Filter> filters = new ArrayList<>();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
-            if((med.getNameMedication().equals(medication.getNameMedication())
-                    && !med.getTypeMedication().equals(medication.getTypeMedication()))
-                    || (med.getNameMedication().equals(medication.getNameMedication())
+            if(med.getNameMedication().equals(medication.getNameMedication())
                     && med.getTypeMedication().equals(medication.getTypeMedication())
-                    && med.getIdCompany()==medication.getIdCompany())){
+                    && med.getIdCompany()==medication.getIdCompany()){
                 return false;
             }
         }
-        medicationRepository.insertMedication(medication);
+        medicationRepository.updateMedication(medication);
         return true;
+
     }
     public boolean insertMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
