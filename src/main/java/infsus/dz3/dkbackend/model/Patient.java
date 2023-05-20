@@ -12,6 +12,6 @@ import lombok.Setter;
 public class Patient extends Healthcareuser {
 
   private long idPatient;
-  private long idFamilyDoctor;
+  private long idDoctor;
 
 }

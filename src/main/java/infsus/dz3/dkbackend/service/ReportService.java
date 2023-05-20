@@ -38,6 +38,8 @@ public class ReportService {
 
     public void insertReport(RepPrescDto repPresc){
         Report report = modelMapper.map(repPresc.getReport(), Report.class);
+        report.setIdDoctor(repPresc.getReport().getDoctor().getIdDoctor());
+        report.setIdPatient(repPresc.getReport().getPatient().getIdPatient());
         int id_report = reportRepository.insertReport(report);
         report.setIdReport(id_report);
         for(PrescriptionDto prescriptionDto : repPresc.getPrescriptions()){

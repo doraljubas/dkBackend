@@ -63,9 +63,11 @@ public class MedicationService {
     public List<MedicationDto> getMedications(List<Filter> filters) {
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         List<Medication> medications = medicationRepository.getMedications(filters);
-        List<MedicationDto> medicationsDto = medications.stream().map(med->modelMapper.map(med, MedicationDto.class)).collect(Collectors.toList());
-        for(MedicationDto medication : medicationsDto){
-            medication.setCompany(healthcareCompanyRepository.getHealhcareCompany(medication.getCompany().getIdCompany()));
+        List<MedicationDto> medicationsDto = new ArrayList<>();//medications.stream().map(med->modelMapper.map(med, MedicationDto.class)).collect(Collectors.toList());
+        for(Medication medication : medications){
+            MedicationDto medicationDto = modelMapper.map(medication, MedicationDto.class);
+            medicationDto.setCompany(healthcareCompanyRepository.getHealhcareCompany(medication.getIdCompany()));
+            medicationsDto.add(medicationDto);
         }
         return medicationsDto;
     }
