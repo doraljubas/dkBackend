@@ -8,6 +8,7 @@ import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +18,11 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class MedicationService {
-
+    @Autowired
     MedicationRepository medicationRepository;
     HealthcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
+
 
     public int updateMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
@@ -29,12 +31,12 @@ public class MedicationService {
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
             if(med.getIdMedication() != medication.getIdMedication()){
-                if(med.getNameMedication().equals(medication.getNameMedication())
-                        && !med.getTypeMedication().equals(medication.getTypeMedication())){
+                if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
+                        && !med.getTypeMedication().equalsIgnoreCase(medication.getTypeMedication())){
                     return 1;
                 }
-                if(med.getNameMedication().equals(medication.getNameMedication())
-                        && med.getTypeMedication().equals(medication.getTypeMedication())
+                if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
+                        && med.getTypeMedication().equalsIgnoreCase(medication.getTypeMedication())
                         && med.getIdCompany()==medication.getIdCompany()){
                     return 2;
                 }
@@ -49,13 +51,14 @@ public class MedicationService {
         medication.setIdCompany(medicationDto.getCompany().getIdCompany());
         List<Filter> filters = new ArrayList<>();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
+
         for(Medication med : medicationRepository.getMedications(filters)) {
-            if(med.getNameMedication().equals(medication.getNameMedication())
-                && !med.getTypeMedication().equals(medication.getTypeMedication())){
+            if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
+                && !med.getTypeMedication().equalsIgnoreCase(medication.getTypeMedication())){
                 return 1;
             }
-            if(med.getNameMedication().equals(medication.getNameMedication())
-                    && med.getTypeMedication().equals(medication.getTypeMedication())
+            if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
+                    && med.getTypeMedication().equalsIgnoreCase(medication.getTypeMedication())
                     && med.getIdCompany()==medication.getIdCompany()){
                 return 2;
             }
