@@ -35,7 +35,8 @@ public class ControllerTests {
     @MockBean
     private MedicationService medicationService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testGetMedications() throws Exception {

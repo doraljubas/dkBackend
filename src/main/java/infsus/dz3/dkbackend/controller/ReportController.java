@@ -20,12 +20,12 @@ public class ReportController {
     }
 
     @PostMapping(value="/addReport")
-    public void postReport(@RequestBody RepPrescDto repPresc){
+    public void addReport(@RequestBody RepPrescDto repPresc){
         reportService.insertReport(repPresc);
     }
 
     @GetMapping(value="/deleteReport")
-    public void postReport(@RequestParam("reportId") long reportId){
+    public void deleteReport(@RequestParam("reportId") long reportId){
         reportService.deleteReport(reportId);
     }
 

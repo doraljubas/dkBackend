@@ -8,12 +8,10 @@ import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
