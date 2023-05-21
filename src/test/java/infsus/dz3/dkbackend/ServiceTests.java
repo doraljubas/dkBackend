@@ -6,86 +6,93 @@ import infsus.dz3.dkbackend.model.Medication;
 import infsus.dz3.dkbackend.repository.HealthcareCompanyRepository;
 import infsus.dz3.dkbackend.repository.MedicationRepository;
 import infsus.dz3.dkbackend.service.MedicationService;
-import infsus.dz3.dkbackend.utils.filters.domain.Filter;
+import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.Before;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
+
+
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class ServiceTests {
 
-    @MockBean
-    private MedicationRepository medicationRepository;
-    HealthcareCompanyRepository healthcareCompanyRepository;
-    ModelMapper modelMapper = new ModelMapper();
-
     @Mock
-    private MedicationService medicationService = new MedicationService(medicationRepository,healthcareCompanyRepository,modelMapper);
+    private MedicationRepository medicationRepository;
+    @Mock
+    private HealthcareCompanyRepository healthcareCompanyRepository;
+    @Spy
+    ModelMapper modelMapper;
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this); // this is needed for inititalizytion of mocks, if you use @Mock
-        medicationService = new MedicationService(medicationRepository,healthcareCompanyRepository,modelMapper);
+    @InjectMocks
+    private MedicationService medicationService;
+
+    List<Medication> lista = new ArrayList<>();
+    HealthcareCompany compA;
+    HealthcareCompany compB;
+    Medication medicationIn1;
+    Medication medicationIn2;
+
+    @BeforeEach
+    void setup(){
+        ModelMapper modelMapper = new ModelMapper();
+
+        compA = new HealthcareCompany(1, "CompA");
+        compB = new HealthcareCompany(2, "CompB");
+
+        medicationIn1 = new Medication(3, "MedA", "TypeA", 1, true);
+        medicationIn2 = new Medication(4, "MedB", "TypeB", 1, true);
+
+        lista.addAll(Arrays.asList(medicationIn1,medicationIn2));
+        when(medicationRepository.getMedications(anyList())).thenReturn(lista);
     }
-
 
     @Test
     public void testGetMedications() {
-        HealthcareCompany compA = new HealthcareCompany(1, "CompA");
-        MedicationDto medication1 = new MedicationDto(1, "MedA", "TypeA", compA, true);
-        HealthcareCompany compB = new HealthcareCompany(2, "CompB");
-        MedicationDto medication2 = new MedicationDto(2, "MedB", "TypeB", compB, true);
-        List<Filter> list = new ArrayList<>();
-        when(medicationService.getMedications(list)).thenReturn(Arrays.asList(medication1, medication2));
-        assertEquals(medicationService.getMedications(list).size(), 2);
-        assertEquals(medicationService.getMedications(list).get(0), medication1);
-        assertEquals(medicationService.getMedications(list).get(1), medication2);
-        assertEquals(medicationService.getMedications(list).get(0).getCompany(), compA);
-        assertEquals(medicationService.getMedications(list).get(1).getCompany(), compB);
-        assertNotEquals(medicationService.getMedications(list).get(1), null);
+        assertEquals(2, medicationService.getMedications(new ArrayList<>()).size());
+        assertEquals(medicationIn1.getIdMedication(), medicationService.getMedications(new ArrayList<>()).get(0).getIdMedication());
+        assertEquals(medicationIn2.getIdMedication(), medicationService.getMedications(new ArrayList<>()).get(1).getIdMedication());
+    }
+    @Test
+    public void testInsertMedicationSuccess() {
+        MedicationDto medicationSuccess = new MedicationDto(1, "MedC", "TypeC", compA, true);
+        assertEquals(0, medicationService.insertMedication(medicationSuccess));
+    }
+    @Test
+    public void testInsertMedicationFailedDouble() {
+        MedicationDto medicationDouble = new MedicationDto(1, "MedA", "TypeA", compA, true);
+        assertEquals(2, medicationService.insertMedication(medicationDouble));
     }
 
     @Test
-    public void testInsertMedication() {
-        HealthcareCompany compA = new HealthcareCompany(1, "CompA");
-        MedicationDto medication1 = new MedicationDto(1, "MedA", "TypeA", compA, true);
-        Medication medication2 = new Medication(2, "MedA", "TypeA", 1, true);
-        Medication medication3 = new Medication(2, "MedA", "TypeB", 1, true);
-
-        when(medicationRepository.getMedications(new ArrayList<>())).thenReturn(Arrays.asList(medication2));
-        // when -  action or the behaviour that we are going test
-        int ins2 = medicationService.insertMedication(medication1);
-        // then - verify the output
-        assertEquals(3,ins2);
+    public void testInsertMedicationFailedIllegal() {
+        MedicationDto medicationIllegal = new MedicationDto(2, "MedB", "TypeA", compB, true);
+        assertEquals(1, medicationService.insertMedication(medicationIllegal));
     }
 
     @Test
-    public void testDeleteMedication() {
-        HealthcareCompany compA = new HealthcareCompany(1, "CompA");
-        MedicationDto medication1 = new MedicationDto(1, "MedA", "TypeA", compA, true);
-        medicationService.insertMedication(medication1);
-        verify(medicationService, times(1)).insertMedication(medication1);
-        ArgumentCaptor<MedicationDto> medArgumentCaptor = ArgumentCaptor.forClass(MedicationDto.class);
-        verify(medicationService).insertMedication(medArgumentCaptor.capture());
-        assertEquals(1, medArgumentCaptor.getValue().getIdMedication());
+    public void testUpdateMedicationSuccess() {
+        MedicationDto medicationSuccess = new MedicationDto(3, "MedA", "TypeC", compA, true);
+        assertEquals(0, medicationService.updateMedication(medicationSuccess));
+    }
+    @Test
+    public void testUpdateMedicationDouble() {
+        MedicationDto medicationDouble = new MedicationDto(3, "MedB", "TypeB", compA, true);
+        assertEquals(2, medicationService.updateMedication(medicationDouble));
+    }
+    @Test
+    public void testUpdateMedicationIllegal() {
+        MedicationDto medicationIllegal = new MedicationDto(3, "MedB", "TypeC", compA, true);
+        assertEquals(1, medicationService.updateMedication(medicationIllegal));
     }
 
 

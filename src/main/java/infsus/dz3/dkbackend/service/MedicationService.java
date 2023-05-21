@@ -8,12 +8,10 @@ import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +19,6 @@ public class MedicationService {
     MedicationRepository medicationRepository;
     HealthcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
-
 
     public int updateMedication(MedicationDto medicationDto){
         Medication medication = modelMapper.map(medicationDto, Medication.class);
@@ -46,11 +43,9 @@ public class MedicationService {
 
     }
     public int insertMedication(MedicationDto medicationDto){
-        return 3;
-        //Medication medication = modelMapper.map(medicationDto, Medication.class);
-        //medication.setIdCompany(medicationDto.getCompany().getIdCompany());
-
-        /*List<Filter> filters = new ArrayList<>();
+        Medication medication = modelMapper.map(medicationDto, Medication.class);
+        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+        List<Filter> filters = new ArrayList<>();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
             if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
@@ -64,7 +59,7 @@ public class MedicationService {
             }
         }
         medicationRepository.insertMedication(medication);
-        return 0;*/
+        return 0;
     }
 
     public void deleteMedication(long medicationId){
@@ -72,6 +67,7 @@ public class MedicationService {
     }
 
     public List<MedicationDto> getMedications(List<Filter> filters) {
+        modelMapper = new ModelMapper();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         List<Medication> medications = medicationRepository.getMedications(filters);
         List<MedicationDto> medicationsDto = new ArrayList<>();//medications.stream().map(med->modelMapper.map(med, MedicationDto.class)).collect(Collectors.toList());

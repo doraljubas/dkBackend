@@ -12,7 +12,6 @@ import java.util.List;
 public class PerscriptionService {
     PrescriptionRepository prescriptionRepository;
 
-    //Dohvat svih recepata nalaza za zadani reportId
     public List<Prescription> getPrescriptions(int reportId){
         return prescriptionRepository.getPrescriptions(reportId);
     }
