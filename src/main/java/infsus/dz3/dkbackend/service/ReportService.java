@@ -23,15 +23,21 @@ public class ReportService {
     ReportRepository reportRepository;
     PrescriptionRepository prescriptionRepository;
 
-    public List<ReportDto> getReports(long patientId){
-        List<ReportDto> reportsDto = new ArrayList<>();
+    PrescriptionService prescriptionService;
+
+    public List<RepPrescDto> getReports(long patientId){
+        List<RepPrescDto> reportsDto = new ArrayList<>();
         PatientDto patient = patientService.getPatient(patientId);
         for(Report report : reportRepository.getReports(patientId)){
-            DoctorDto doctor = doctorService.getDoctor(report.getIdDoctor());
+            RepPrescDto repPrescDto = new RepPrescDto();
             ReportDto reportDto = modelMapper.map(report, ReportDto.class);
             reportDto.setPatient(patient);
+            DoctorDto doctor = doctorService.getDoctor(report.getIdDoctor());
             reportDto.setDoctor(doctor);
-            reportsDto.add(reportDto);
+            List<PrescriptionDto> prescriptionDtos= prescriptionService.getPrescriptions((int) report.getIdReport());
+            repPrescDto.setReport(reportDto);
+            repPrescDto.setPrescriptions(prescriptionDtos);
+            reportsDto.add(repPrescDto);
         }
         return reportsDto;
     }
@@ -41,18 +47,20 @@ public class ReportService {
         report.setIdDoctor(repPresc.getReport().getDoctor().getIdDoctor());
         report.setIdPatient(repPresc.getReport().getPatient().getIdPatient());
         int id_report = reportRepository.insertReport(report);
-        report.setIdReport(id_report);
+        //report.setIdReport(id_report);
         for(PrescriptionDto prescriptionDto : repPresc.getPrescriptions()){
             Prescription prescription = modelMapper.map(prescriptionDto, Prescription.class);
+            prescription.setIdReport(id_report);
+            prescription.setIdMedication(prescriptionDto.getMedication().getIdMedication());
             prescriptionRepository.insertPrescription(prescription);
         }
     }
 
     public void deleteReport(long reportId){
-        reportRepository.deleteReport(reportId);
         List<Prescription> prescriptions = prescriptionRepository.getPrescriptions(reportId);
         for(Prescription prescription : prescriptions){
             prescriptionRepository.deletePrescription(prescription.getIdPrescription());
         }
+        reportRepository.deleteReport(reportId);
     }
 }

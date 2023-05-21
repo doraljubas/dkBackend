@@ -10,7 +10,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -31,7 +30,7 @@ public class ReportRepository {
         INSERT INTO Report(date_report, diagnosis, recomendation, anamnesis, ID_patient, ID_doctor)
         VALUES(:date_report, :diagnosis, :recomendation, :anamnesis, :ID_patient, :ID_doctor)
         """;
-        SqlParameterSource namedParameters = new MapSqlParameterSource("date_report", LocalDate.now())
+        SqlParameterSource namedParameters = new MapSqlParameterSource("date_report", report.getDateReport())
                 .addValue("diagnosis", report.getDiagnosis())
                 .addValue("recomendation", report.getRecomendation())
                 .addValue("anamnesis", report.getAnamnesis())

@@ -15,7 +15,7 @@ public class ReportController {
     ReportService reportService;
 
     @GetMapping(value="/getReports")
-    public List<ReportDto> getReports(@RequestParam("patientId") long patientId){
+    public List<RepPrescDto> getReports(@RequestParam("patientId") long patientId){
         return reportService.getReports(patientId);
     }
 

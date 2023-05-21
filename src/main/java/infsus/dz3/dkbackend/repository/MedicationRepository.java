@@ -63,4 +63,10 @@ public class MedicationRepository {
         SQL= FilterHelper.determineAndAppendWhereClause(SQL, filters, namedParameters, tableAndColumnOptions);
         return namedParameterJdbcTemplate.query(SQL.toString(),namedParameters, BeanPropertyRowMapper.newInstance(Medication.class));
     }
+
+    public Medication getMedication(long medicationId) {
+        String SQL="SELECT * FROM Medication WHERE id_medication = :medicationId";
+        SqlParameterSource namedParameters = new MapSqlParameterSource("medicationId", medicationId);
+        return namedParameterJdbcTemplate.queryForObject(SQL, namedParameters, BeanPropertyRowMapper.newInstance(Medication.class));
+    }
 }

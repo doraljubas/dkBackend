@@ -17,6 +17,6 @@ public class PrescriptionDto {
     private java.sql.Date dateOfExpiry;
     private String instructions;
     private boolean renewing;
-    private Medication medication;
+    private MedicationDto medication;
     private Report report;
 }
