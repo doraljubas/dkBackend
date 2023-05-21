@@ -46,11 +46,11 @@ public class MedicationService {
 
     }
     public int insertMedication(MedicationDto medicationDto){
-        return 3;
-        //Medication medication = modelMapper.map(medicationDto, Medication.class);
-        //medication.setIdCompany(medicationDto.getCompany().getIdCompany());
 
-        /*List<Filter> filters = new ArrayList<>();
+        Medication medication = modelMapper.map(medicationDto, Medication.class);
+        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
+
+        List<Filter> filters = new ArrayList<>();
         filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
             if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
@@ -64,7 +64,7 @@ public class MedicationService {
             }
         }
         medicationRepository.insertMedication(medication);
-        return 0;*/
+        return 0;
     }
 
     public void deleteMedication(long medicationId){
@@ -81,5 +81,12 @@ public class MedicationService {
             medicationsDto.add(medicationDto);
         }
         return medicationsDto;
+    }
+
+    public MedicationDto getMedication(long medicationId){
+        Medication medication = medicationRepository.getMedication(medicationId);
+        MedicationDto medicationDto = modelMapper.map(medication, MedicationDto.class);
+        medicationDto.setCompany(healthcareCompanyRepository.getHealhcareCompany(medication.getIdCompany()));
+        return medicationDto;
     }
 }
