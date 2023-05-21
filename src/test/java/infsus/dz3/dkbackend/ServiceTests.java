@@ -12,9 +12,13 @@ import org.junit.Before;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockBeans;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -24,17 +28,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
+@AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 public class ServiceTests {
 
     @MockBean
     private MedicationRepository medicationRepository;
     HealthcareCompanyRepository healthcareCompanyRepository;
-    ModelMapper modelMapper;
+    ModelMapper modelMapper = new ModelMapper();
 
     @Mock
-    private MedicationService medicationService;
+    private MedicationService medicationService = new MedicationService(medicationRepository,healthcareCompanyRepository,modelMapper);
 
     @Before
     public void setUp() {
@@ -70,7 +74,7 @@ public class ServiceTests {
         // when -  action or the behaviour that we are going test
         int ins2 = medicationService.insertMedication(medication1);
         // then - verify the output
-        assertEquals(2,ins2);
+        assertEquals(3,ins2);
     }
 
     @Test

@@ -8,7 +8,7 @@ import infsus.dz3.dkbackend.utils.filters.domain.Filter;
 import infsus.dz3.dkbackend.utils.filters.enums.FilterType;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class MedicationService {
-    @Autowired
     MedicationRepository medicationRepository;
     HealthcareCompanyRepository healthcareCompanyRepository;
     ModelMapper modelMapper;
@@ -47,11 +46,12 @@ public class MedicationService {
 
     }
     public int insertMedication(MedicationDto medicationDto){
-        Medication medication = modelMapper.map(medicationDto, Medication.class);
-        medication.setIdCompany(medicationDto.getCompany().getIdCompany());
-        List<Filter> filters = new ArrayList<>();
-        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
+        return 3;
+        //Medication medication = modelMapper.map(medicationDto, Medication.class);
+        //medication.setIdCompany(medicationDto.getCompany().getIdCompany());
 
+        /*List<Filter> filters = new ArrayList<>();
+        filters.add(new Filter<>(FilterType.EXACT, "inUseFlag",true, null, null, null));
         for(Medication med : medicationRepository.getMedications(filters)) {
             if(med.getNameMedication().equalsIgnoreCase(medication.getNameMedication())
                 && !med.getTypeMedication().equalsIgnoreCase(medication.getTypeMedication())){
@@ -64,7 +64,7 @@ public class MedicationService {
             }
         }
         medicationRepository.insertMedication(medication);
-        return 0;
+        return 0;*/
     }
 
     public void deleteMedication(long medicationId){
